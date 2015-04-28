@@ -1,46 +1,30 @@
-#if 0
+#if 1
 #include <iostream>
 #include <fstream>
+#include "_WINDOW_PE_FORMAT.h"
 
 #define MAX_LENGTH 50000
 #define MAX_FILENAME 100
 
+#define DEBUG 1
+
 using namespace std;
-/*
-ENUM PEtype = {
-	.text, .bss 
-};
-*/
-class CPEFormat{
-	string m_DOSheader;
-	string m_DOSstup;
-	string m_NTheader;
-	string m_textbss;
-	string m_text;
-	string m_rdata;
-	string m_data;
-	string m_idata;
-	string m_rsrc;
-	string m_reloc;
 
-}PEHeader, *PPEHeader;
-/*
-class CFileManager{
-
-}FileManager;
-*/
 
 void main()
 {
 	char filename[MAX_FILENAME];
 
-	cout<<"input filename: "<<endl;
-	cin>>filename;
 
-	ifstream infile(filename);
-	
+	cout<<"input PE file name: "<<endl;
+	//cin>>filename;
+
+	//ifstream infile(filename);
+	ifstream infile("bitstudy.exe");
+
 	char PEbuffer[MAX_LENGTH];
 	int length = 0;
+
 	if (!infile.bad())
 	{
 		infile.seekg(0, infile.end);
@@ -48,16 +32,18 @@ void main()
 		infile.seekg(0, infile.beg);
 
 		infile.read(PEbuffer, length);
+
 		infile.close();
 	}
 
-	cout<<length<<endl;
-	for(int i=0 ;(i < length) && (i<MAX_LENGTH); i++)
+	//¼±¾ð
+	WINDOW_PE_FORMAT pef(PEbuffer);
+
+	cout<<endl<<length<<endl;
+
+	for(int i=0 ;i<500; i++)
 	{
 		printf("%c", PEbuffer[i]);
-		if(PEbuffer[i] == '\eof')
-			break;
-
 	}
 }
 
