@@ -20,19 +20,31 @@ typedef struct _IMAGE_DOS_STUB{
 
 #endif
 
-
+/******************************************************
+ * PE Header - e_magic: header 구분
+ *			 - e_lfanew: offset of nt header, 해당 주소부터 nt헤더 시작
+ * dos stub - 우선 char 배열로 저장, e_lfanew 전까지. 없을경우 null
+ * ntheader - 
+ *
+ ******************************************************/
 typedef class _WINDOW_PE_FORMAT
 {
-	char* AllData;
-	IMAGE_DOS_HEADER ImageDosHeader;
-	IMAGE_DOS_STUB DosStub;
-	IMAGE_NT_HEADERS ImageNtHeaders;
-	IMAGE_SECTION_HEADER SectionHeaderText;
-	IMAGE_SECTION_HEADER SectionHeaderData;
-	IMAGE_SECTION_HEADER SectionHeaderRsrc;
+	//파일 내용 저장
+	const char *AllData;
+	//char* AllData;
+	//파일형식 저장
+	IMAGE_DOS_HEADER ImageDosHeader;			// PE Header
+	IMAGE_DOS_STUB ImageDosStub;				// Dos Stub
+	IMAGE_NT_HEADERS ImageNtHeaders;			// NT Header
+	IMAGE_SECTION_HEADER *pSectionHeader;		// Section Pointer
+	IMAGE_IMPORT_DESCRIPTOR *pImportDescriptor;	//
 
-	IMAGE_SECTION_HEADER a;
+	//형식 길이 저장
+	int DosHeaderLength;
+	int DosStubLength;
+	int DosNtHeaderLength;
 	
+
 public:
 	//생성자, 소멸자
 	_WINDOW_PE_FORMAT(void);
@@ -42,11 +54,15 @@ public:
 	
 	void initData(void);
 
-	//GET, SET
+	//GET
 	void SetDosHeader();
 	void SetDosStub();
 	void SetNtHeaders();
+	//SET
 	IMAGE_DOS_HEADER GetDosHeader();
 	IMAGE_DOS_STUB GetDosStub();
 	IMAGE_NT_HEADERS GetNtHeaders();
+	//print
+	void printAllData();
+
 }WINDOW_PE_FORMAT, *PWINDOW_PE_FORMAT;

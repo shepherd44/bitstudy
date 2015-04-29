@@ -22,7 +22,8 @@ void main()
 	//ifstream infile(filename);
 	ifstream infile("bitstudy.exe");
 
-	char PEbuffer[MAX_LENGTH];
+	char *PEbuffer;
+
 	int length = 0;
 
 	if (!infile.bad())
@@ -31,20 +32,17 @@ void main()
 		length = infile.tellg();
 		infile.seekg(0, infile.beg);
 
-		infile.read(PEbuffer, length);
+		PEbuffer = new char[length];
 
+		infile.read(PEbuffer, length);
 		infile.close();
 	}
 
+	
 	//¼±¾ð
 	WINDOW_PE_FORMAT pef(PEbuffer);
-
-	cout<<endl<<length<<endl;
-
-	for(int i=0 ;i<500; i++)
-	{
-		printf("%c", PEbuffer[i]);
-	}
+	delete PEbuffer;
+	//cout<<endl<<length<<endl;
 }
 
 #endif
