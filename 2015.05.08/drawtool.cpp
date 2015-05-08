@@ -1,4 +1,6 @@
 #if 1
+#pragma comment(lib,"comctl32")
+
 //----------------------------------------------
 //  그림판
 //----------------------------------------------
@@ -37,8 +39,7 @@
 
 enum SHAPEMODE {LINE = 0, RECTAN, ELLIPSE, TRI, SHAPEMODENUM};
 typedef struct DrawInfo {
-	int ShapeMode;
-//	SHAPEMODE ShapeMode;	//도형 모양
+	int ShapeMode;			//도형 모양
 	int penW;				//선굵기
 	COLORREF PenColor;		//선 색
 	COLORREF BrushColor;	//브러쉬 색
@@ -133,7 +134,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT iMessage,WPARAM wParam,LPARAM lParam)
 		{0,10,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0,0,0},
 		{1,11,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0,0,0},
 		{5,0,0,TBSTYLE_SEP,0,0,0,0},
-		{2,12,TBSTATE_ENABLED | TBSTATE_CHECKED,TBSTYLE_CHECKGROUP,0,0,0,0},
+		{2,12,TBSTATE_ENABLED,TBSTYLE_CHECKGROUP,0,0,0,0},
 		{3,13,TBSTATE_ENABLED,TBSTYLE_CHECKGROUP,0,0,0,0}
    };
 
