@@ -6,10 +6,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <winsock2.h>
+#include <iostream>
 
-// 공통 매크로 정의
+
 #define BUFFERSIZE			1024
 
-// 공통 함수 정의
 // 오류메시지 출력
 void DisplayMessage();
+
+#define EVENTERRORCHECK(ne,ercode)	{if(ne.iErrorCode[ercode] != 0) {		\
+	DisplayMessage();	return -1; }}
+
+
+
+
