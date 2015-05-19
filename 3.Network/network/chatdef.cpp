@@ -60,6 +60,7 @@ int CreateRoom(std::vector<ROOMINFO>& v, int rnum, const char* str)
 	riTemp.iRoomNum = rnum;
 	
 	v.push_back(riTemp);
+	return 0;
 }
 void DeleteRoom(std::vector<ROOMINFO>& v, int index )
 {
@@ -132,26 +133,28 @@ int ListenClient()
 	g_EventCnt++;
 	// 클라이언트 리스트에 등록
 	siTemp.hEvent = hClientEvent;
-	// 대기열에 등록- 방들어가기전
+	// 대기열에 등록- 방들어가기전(awaiter_room)
 
-	FindRoom(g_RoomInfo, AWAITER_ROOM)->ClientList.push_back(siTemp);
-	
+	AddClient(*FindRoom(g_RoomInfo,AWAITER_ROOM),siTemp);
 	// 접속메세지 전송
 	char buf[BUFFERSIZE];
-	int retByte = sprintf(buf, "\n[TCP 서버][%s:%d]접속을 환영합니다.\n",
+	int retByte = sprintf(buf, "\n[TCP 서버][%s:%d]님 접속을 환영합니다.\n",
 		inet_ntoa(sockaddr->sin_addr), ntohs(sockaddr->sin_port));
+	
 	send(siTemp.sSocket, buf, strlen(buf), 0);
 	return true;
 }
 // 선택한 방으로 입장
-int AddClient(ROOMINFO& ri, const EVENTSOCKET& si, int index)
+int AddClient(ROOMINFO& ri, const EVENTSOCKET si)
 {
 
+	ri.ClientList.push_back(si);
 	// 접속메세지 전송
 	char buf[BUFFERSIZE];
-	int retByte = sprintf(buf, "\n[TCP 서버][%s:%d]님 접속\n",
+	int retByte = sprintf(buf, "\n[TCP 서버][%s][%s:%d]님 접속\n", ri.cpRoomName,
 		inet_ntoa(si.saSocketAddr.sin_addr), ntohs(si.saSocketAddr.sin_port));
-
+	// 서버 콘솔에 프린트
+	puts(buf);
 	SendAll(&ri, si.hEvent, buf, retByte);
 
 	return true;
@@ -164,7 +167,8 @@ void OutClient(ROOMINFO& ri, EVENTSOCKET si)
 	int retByte = sprintf(buf, "\n[TCP 서버][%s:%d]님 퇴장\n",
 		inet_ntoa(si.saSocketAddr.sin_addr), ntohs(si.saSocketAddr.sin_port));
 	SendAll(&ri, si.hEvent, buf, retByte);
-
+	// 서버 콘솔에 프린트
+	puts(buf);
 	for(int i=0; i< ri.ClientList.size(); i++)
 		if(ri.ClientList.at(i).sSocket == si.sSocket)
 			ri.ClientList.erase(ri.ClientList.begin() + i);
@@ -243,6 +247,7 @@ void RecvClient(EVENTSOCKET si)
 	
 	// 채팅일 경우 자기제외 모두에게 전송
 	int retByte = recv(si.sSocket, buf, BUFFERSIZE, 0);
+	// 서버 콘솔에 프린트
 	printf("[%s][%s:%d] %s\n", FindRoom(g_RoomInfo, si.hEvent)->cpRoomName,
 		inet_ntoa(si.saSocketAddr.sin_addr), htons(si.saSocketAddr.sin_port), buf);
 	ROOMINFO* ri = FindRoom(g_RoomInfo, si.hEvent);

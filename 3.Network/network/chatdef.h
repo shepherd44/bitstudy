@@ -38,7 +38,7 @@ SOCKET FindSocket(std::vector<ROOMINFO>& v, WSAEVENT wsaevent);
 EVENTSOCKET FindEventSocket(std::vector<ROOMINFO>& v, WSAEVENT wsaevent);
 int ListenClient();
 // 사용자 나가기, 들어가기
-int AddClient(RoomInfo& ri, EventSocket si, int index);
+int AddClient(RoomInfo& ri, EventSocket si);
 void OutClient(RoomInfo& ri, EventSocket si);
 // 방안의 사용자 목록(ClientList) 받기
 std::vector<EventSocket> GetClientList(RoomInfo& ri);

@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 				puts("[ERROR] ListenClient error");
 				continue;
 			}
-			puts("Á¢¼Ó");
+			
 		}
 		else if(neEvents.lNetworkEvents & FD_READ || neEvents.lNetworkEvents & FD_WRITE)
 		{
@@ -92,6 +92,7 @@ int main(int argc, char* argv[])
 		{
 			EVENTERRORCHECK(neEvents, FD_CLOSE_BIT);
 				//OutClient(eventindex);
+			OutClient(*FindRoom(g_RoomInfo, evSockTemp.hEvent),evSockTemp);
 		}
 	}
 	
