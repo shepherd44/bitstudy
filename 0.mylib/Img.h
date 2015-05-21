@@ -43,6 +43,9 @@ public:
 	inline BYTE GetGray( int x, int y );
 	inline void SetGray( int x, int y, BYTE Gray );
 
+	void LeftR();
+	void RightR();
+
 	inline BYTE* GetBGRBuf();
 public:
 	char GetExtType( const char* FilePath );	// unknown(0), bitmap(1)
@@ -86,5 +89,6 @@ inline void Img::SetGray( int x, int y, BYTE gray )                  { SetColor(
 inline BYTE Img::GetGray( int x, int y )                             { BYTE gray; GetGray( x, y, &gray ); return gray; }
 
 inline BYTE* Img::GetBGRBuf() { return _BGR; }
+
 
 #endif

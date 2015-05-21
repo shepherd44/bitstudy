@@ -341,3 +341,39 @@ bool Img::WriteRAW( const char* strFilePath )
 
 
 
+void Img::LeftR()
+{
+	int memtmp = 0;
+	int memori = 0;
+	LPBYTE tmp = new BYTE[_BufWidth*_Height];
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			memtmp = (_BufWidth * i) + (_Height - j) * 3;
+			tmp[memtmp + 0] = _BGR[memori + 0];
+			tmp[memtmp + 1] = _BGR[memori + 1];
+			tmp[memtmp + 2] = _BGR[memori + 2];
+		}
+	}
+	memcpy( (void*)_BGR, (void*)tmp, _BufWidth*_Height );
+}
+void Img::RightR()
+{
+	int memtmp = 0;
+	int memori = 0;
+	LPBYTE tmp = new BYTE[_BufWidth*_Height];
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memtmp = _BufWidth * j + i * 3;
+			memori = (_BufWidth * i) + (_Height - j) * 3;
+			tmp[memtmp + 0] = _BGR[memori + 0];
+			tmp[memtmp + 1] = _BGR[memori + 1];
+			tmp[memtmp + 2] = _BGR[memori + 2];
+		}
+	}
+	memcpy( (void*)_BGR, (void*)tmp, _BufWidth*_Height );
+}
