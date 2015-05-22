@@ -42,9 +42,22 @@ public:
 	inline void GetGray( int x, int y, BYTE* Gray );
 	inline BYTE GetGray( int x, int y );
 	inline void SetGray( int x, int y, BYTE Gray );
-
+	// 회전
 	void LeftR();
 	void RightR();
+	// 색죽이기
+	void SetRed(int r);
+	void SetGreen(int g);
+	void SetBlue(int b);
+	void DownRed(int r=0);
+	void DownGreen(int g=0);
+	void DownBlue(int b=0);
+	// RGB UP
+	void UpRed(int r=255);
+	void UpGreen(int g=255);
+	void UpBlue(int b=255);
+	// 
+	void AddColor(int r=0, int g=0, int b=0);
 
 	inline BYTE* GetBGRBuf();
 public:

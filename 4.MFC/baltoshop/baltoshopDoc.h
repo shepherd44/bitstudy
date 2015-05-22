@@ -14,7 +14,8 @@ protected: // serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
-	Img m_SaveImg;
+
+
 // 작업입니다.
 public:
 
@@ -38,6 +39,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 //	afx_msg void OnFileOpen();
+
 };
 
 

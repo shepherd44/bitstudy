@@ -18,9 +18,12 @@ public:
 
 // 작업입니다.
 public:
+	Img m_SaveImg;
 	Img m_ConvertImg;
-
+	CString m_SavePath;
 	double m_ImgRatio;
+
+	CDlgRGBControll* m_Dlg;
 
 // 재정의입니다.
 public:
@@ -48,8 +51,19 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnFileOpen();
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnFileSave();
+	afx_msg void OnFileSaveAs();
+	afx_msg void OnFileOpen();
+	afx_msg void OnPeditLrotate();
+	afx_msg void OnPeditRrotate();
+	afx_msg void OnPeditBdown();
+	afx_msg void OnPeditGdown();
+	afx_msg void OnPeditRdown();
+	afx_msg void OnRgbeditUpB();
+	afx_msg void OnRgbeditUpG();
+	afx_msg void OnRgbeditUpR();
+	afx_msg void OnRgbeditRgbeditdialog();
 };
 
 #ifndef _DEBUG  // baltoshopView.cpp의 디버그 버전

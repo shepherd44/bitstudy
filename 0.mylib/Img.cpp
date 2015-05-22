@@ -377,3 +377,144 @@ void Img::RightR()
 	}
 	memcpy( (void*)_BGR, (void*)tmp, _BufWidth*_Height );
 }
+
+void Img::DownRed(int r)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 2] = 0;
+		}
+	}
+}
+void Img::DownGreen(int g)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 1] = 0;
+		}
+	}
+}
+void Img::DownBlue(int b)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 0] = 0;
+		}
+	}
+}
+void Img::UpRed(int r)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 2] = 255;
+		}
+	}
+}
+void Img::UpGreen(int g)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 1] = 255;
+		}
+	}
+}
+void Img::UpBlue(int b)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 0] = 255;
+		}
+	}
+}
+void Img::AddColor(int r, int g, int b)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			int tmp = _BGR[memori + 0] + b;
+			if(tmp > 255)
+				_BGR[memori + 0] = 255;
+			else if(tmp < 0)
+				_BGR[memori + 0] = 0;
+			else 
+				_BGR[memori + 0] = tmp;
+			tmp = _BGR[memori + 1] + g;
+			if(tmp > 255)
+				_BGR[memori + 1] = 255;
+			else if(tmp < 0)
+				_BGR[memori + 1] = 0;
+			else 
+				_BGR[memori + 1] = tmp;
+			tmp = _BGR[memori + 2] + r;
+			if(tmp > 255)
+				_BGR[memori + 2] = 255;
+			else if(tmp < 0)
+				_BGR[memori + 2] = 0;
+			else 
+				_BGR[memori + 2] = tmp;
+		}
+	}
+}
+void Img::SetRed(int r)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 2] = r;
+		}
+	}
+}
+void Img::SetGreen(int g)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 1] = g;
+		}
+	}
+}
+void Img::SetBlue(int b)
+{
+	int memori = 0;
+	for(int j=0 ; j<_Height ; j++)
+	{
+		for(int i=0; i<_Width; i++)
+		{
+			memori = _BufWidth * j + i * 3;
+			_BGR[memori + 0] = b;
+		}
+	}
+}

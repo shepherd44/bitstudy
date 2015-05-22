@@ -40,6 +40,7 @@
 
 //--
 #include "Img.h"
+#include "DlgRGBControll.h"
 
 
 

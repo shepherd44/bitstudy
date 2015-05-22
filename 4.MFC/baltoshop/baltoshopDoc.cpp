@@ -17,7 +17,7 @@
 IMPLEMENT_DYNCREATE(CbaltoshopDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CbaltoshopDoc, CDocument)
-//	ON_COMMAND(ID_FILE_OPEN, &CbaltoshopDoc::OnFileOpen)
+
 END_MESSAGE_MAP()
 
 
@@ -79,13 +79,3 @@ void CbaltoshopDoc::Dump(CDumpContext& dc) const
 
 // CbaltoshopDoc 명령
 
-//void CbaltoshopDoc::OnFileOpen()
-//{
-//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-//	CFileDialog fdlg(true);
-//	fdlg.DoModal(); 
-//	
-//	m_LoadImg.LoadBMP(fdlg.GetPathName()) ;
-//	m_ConvertImg = m_LoadImg;
-//	
-//}

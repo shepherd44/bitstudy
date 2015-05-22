@@ -22,8 +22,19 @@ BEGIN_MESSAGE_MAP(CbaltoshopView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CbaltoshopView::OnFilePrintPreview)
-	ON_COMMAND(ID_FILE_OPEN, &CbaltoshopView::OnFileOpen)
 	ON_WM_MOUSEWHEEL()
+	ON_COMMAND(ID_FILE_SAVE, &CbaltoshopView::OnFileSave)
+	ON_COMMAND(ID_FILE_SAVE_AS, &CbaltoshopView::OnFileSaveAs)
+	ON_COMMAND(ID_FILE_OPEN, &CbaltoshopView::OnFileOpen)
+	ON_COMMAND(ID_PEDIT_LROTATE, &CbaltoshopView::OnPeditLrotate)
+	ON_COMMAND(ID_PEDIT_RROTATE, &CbaltoshopView::OnPeditRrotate)
+	ON_COMMAND(ID_PEDIT_BDOWN, &CbaltoshopView::OnPeditBdown)
+	ON_COMMAND(ID_PEDIT_GDOWN, &CbaltoshopView::OnPeditGdown)
+	ON_COMMAND(ID_PEDIT_RDOWN, &CbaltoshopView::OnPeditRdown)
+	ON_COMMAND(ID_RGBEDIT_UP_B, &CbaltoshopView::OnRgbeditUpB)
+	ON_COMMAND(ID_RGBEDIT_UP_G, &CbaltoshopView::OnRgbeditUpG)
+	ON_COMMAND(ID_RGBEDIT_UP_R, &CbaltoshopView::OnRgbeditUpR)
+	ON_COMMAND(ID_RGBEDIT_RGBEDITDIALOG, &CbaltoshopView::OnRgbeditRgbeditdialog)
 END_MESSAGE_MAP()
 
 // CbaltoshopView 생성/소멸
@@ -32,10 +43,13 @@ CbaltoshopView::CbaltoshopView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	m_ImgRatio = 1;
+	m_Dlg = NULL;
 }
 
 CbaltoshopView::~CbaltoshopView()
 {
+	if(m_Dlg != NULL)
+		delete m_Dlg;
 }
 
 BOOL CbaltoshopView::PreCreateWindow(CREATESTRUCT& cs)
@@ -55,12 +69,10 @@ void CbaltoshopView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
-
 	CRect rect;
 	this->GetWindowRect(&rect);
 	int x = rect.Width()/2 - (m_ConvertImg.GetWidth()/2)*m_ImgRatio;
 	int y = rect.Height()/2 - (m_ConvertImg.GetHeight()/2)*m_ImgRatio;
-	m_ConvertImg.LeftR();
 	m_ConvertImg.Draw(pDC, x, y, m_ConvertImg.GetWidth()*m_ImgRatio, m_ConvertImg.GetHeight()*m_ImgRatio);
 	
 }
@@ -125,19 +137,6 @@ CbaltoshopDoc* CbaltoshopView::GetDocument() const // 디버그되지 않은 버전은 인�
 
 // CbaltoshopView 메시지 처리기
 
-void CbaltoshopView::OnFileOpen()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	CbaltoshopDoc* pDoc = GetDocument();
-
-	CFileDialog fdlg(true);
-	fdlg.DoModal(); 
-	
-	m_ConvertImg.LoadBMP(fdlg.GetPathName()) ;
-	pDoc->m_SaveImg = m_ConvertImg;
-	Invalidate();
-}
-
 
 BOOL CbaltoshopView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
@@ -156,4 +155,124 @@ BOOL CbaltoshopView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	Invalidate();
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+
+
+void CbaltoshopView::OnFileOpen()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CFileDialog fdlg(true);
+	fdlg.DoModal(); 
+	m_SavePath = fdlg.GetPathName();
+	m_SaveImg.LoadBMP(fdlg.GetPathName());
+	m_ConvertImg = m_SaveImg;
+
+	Invalidate();
+	
+}
+
+void CbaltoshopView::OnFileSave()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_SaveImg = m_ConvertImg;
+	m_SaveImg.WriteBMP(m_SavePath);
+}
+
+void CbaltoshopView::OnFileSaveAs()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_SaveImg = m_ConvertImg;
+	CFileDialog fdlg(true);
+	fdlg.DoModal(); 
+	if(m_SaveImg.WriteBMP(fdlg.GetPathName()))
+		m_SavePath = fdlg.GetPathName();
+	else
+		AfxMessageBox(TEXT("저장 실패"));
+	
+}
+
+void CbaltoshopView::OnPeditLrotate()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_ConvertImg.LeftR();
+	Invalidate();
+}
+
+void CbaltoshopView::OnPeditRrotate()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_ConvertImg.RightR();
+	Invalidate();
+
+}
+
+void CbaltoshopView::OnPeditBdown()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_ConvertImg.DownBlue();
+	Invalidate();
+}
+
+void CbaltoshopView::OnPeditGdown()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_ConvertImg.DownGreen();
+	Invalidate();
+}
+
+void CbaltoshopView::OnPeditRdown()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_ConvertImg.DownRed();
+	Invalidate();
+}
+
+void CbaltoshopView::OnRgbeditUpB()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_ConvertImg.UpBlue();
+	Invalidate();
+}
+
+void CbaltoshopView::OnRgbeditUpG()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_ConvertImg.UpGreen();
+	Invalidate();
+}
+
+void CbaltoshopView::OnRgbeditUpR()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_ConvertImg.UpRed();
+	Invalidate();
+}
+void CbaltoshopView::OnRgbeditRgbeditdialog()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	
+	/*if(m_Dlg ==  NULL)
+	{
+		m_Dlg = new CDlgRGBControll();
+		m_Dlg->Create(IDD_DIALOG_GRBCONTROL);
+		m_Dlg->ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		m_Dlg->ShowWindow(SW_SHOW);
+	}
+
+	m_ConvertImg.AddColor(m_Dlg->m_Red, m_Dlg->m_Green, m_Dlg->m_Blue);
+	Invalidate();*/
+
+	if(m_Dlg == NULL)
+	{
+		m_Dlg = new CDlgRGBControll();
+	}
+	if(m_Dlg->DoModal() == IDOK)
+	{
+		m_ConvertImg.AddColor(m_Dlg->m_Red, m_Dlg->m_Green, m_Dlg->m_Blue);
+		Invalidate();
+	}
 }
