@@ -92,7 +92,7 @@ namespace cs_assem
     {
         static void Main(string[] args)
         {
-            Globals.LoadOpCodes();
+            GlobalStatic.LoadOpcode();
 
             Assembly asm = Assembly.LoadFile(@"C:\HJM\bitAPI\c#\CSharp\SunCraft\bin\Debug\SunCraft.exe");
             // 메소드 내용 있는거 저장용
@@ -100,15 +100,16 @@ namespace cs_assem
 
             Console.WriteLine(asm.Location);
             Module[] Modules = asm.GetModules();
-
+            #region 메소드 불러오기
             foreach (Module item in Modules)
             {
+                
                 Console.WriteLine("-" + item.ToString());
-                Type[] types= item.GetTypes();
-                foreach (Type Class in types)               
-	            {
+                Type[] types = item.GetTypes();
+                foreach (Type Class in types)
+                {
                     Console.WriteLine("======");
-                    Console.WriteLine("--"+Class.ToString());
+                    Console.WriteLine("--" + Class.ToString());
 
                     #region 클래스 내부 모든 멤버들
                     //MemberInfo[] members= Class.GetMembers(BindingFlags.NonPublic | BindingFlags.Public);
@@ -117,12 +118,12 @@ namespace cs_assem
                     //    //Console.WriteLine("---[member]:" + member.Name);
                     //}
                     #endregion
-                    
-                    MethodInfo[] methods = Class.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance  | BindingFlags.DeclaredOnly);
+
+                    MethodInfo[] methods = Class.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                     foreach (MethodInfo method in methods)
                     {
                         limethod.Add(method);
-                        
+
                         Console.Write("---[method]:" + method.Name);
                         #region 파라미터
                         //ParameterInfo[] parameters = method.GetParameters();
@@ -134,20 +135,23 @@ namespace cs_assem
                         //}
                         //Console.WriteLine("");
                         #endregion
-                        
+
                     }
                     FieldInfo[] fields = Class.GetFields();
                     foreach (FieldInfo field in fields)
                     {
                         //Console.WriteLine("---[field]:" + field.Name);
                     }
-                    
+
                 }
             }
+            #endregion
 
 
+            ILCodeReader reader;
             foreach (MethodInfo method in limethod)
             {
+                
                 List<OpCode> codes = new List<OpCode>();
                 int position = 0;
 
@@ -157,6 +161,17 @@ namespace cs_assem
                     continue;
                 byte[] ilcodes = method.GetMethodBody().GetILAsByteArray();
 
+                reader = new ILCodeReader(Modules[0], ilcodes);
+
+                foreach (ILInstruct ilin in reader.m_ILInstructs)
+                {
+                    Console.Write(ilin.Opcode.Name);
+                    if (ilin.Operand != null)
+                        Console.WriteLine(", operand: " + ilin.Operand.ToString());
+                    else
+                        Console.WriteLine("");
+                }
+                /*
                 int a;
                 string str;
                 for (position = 0; position < ilcodes.Length - 1; )
@@ -268,7 +283,7 @@ namespace cs_assem
                     Console.WriteLine("operand: " + str);
                 }
                 Console.WriteLine("\n");
-
+                */
                 
 
                 
